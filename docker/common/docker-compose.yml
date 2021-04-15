@@ -1,0 +1,6 @@
+version: '2'
+services:
+  licensingservice:
+      image: arribajim/mx-exchangerate-service:latest
+      ports:
+        - "9990:9990"

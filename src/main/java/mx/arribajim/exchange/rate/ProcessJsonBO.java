@@ -25,7 +25,7 @@ public class ProcessJsonBO {
 
 	public void saveFixerLatest() throws Exception, IOException {
 		String url = encryptUtil.getProperty("cryp.url.fixer.io");
-		JSONObject res = ParceUrl.readJsonFromUrl(url);
+		JSONObject res = ParceUrl.readJsonFromUrl(url);//todo add timeout and try aiagn
 		
 		if(res.getBoolean("success")){
 			log.info("Saving from fixer with date " + res.getString("date"));
@@ -36,7 +36,7 @@ public class ProcessJsonBO {
 			JSONObject rates = res.getJSONObject("rates");
 			ArrayList<ExchangeRate> ratesList= new ArrayList<ExchangeRate>();
 			rates.toMap().forEach( (k, v) ->{
-				log.info(String.format("key %s, value %s", k,v));							
+				log.debug(String.format("key %s, value %s", k,v));							
 				try {
 					ExchangeRate bean = new ExchangeRate();
 					bean.setCurrency(k);
@@ -48,7 +48,7 @@ public class ProcessJsonBO {
 			
 			ers.setExchangeRateList(ratesList);
 			
-			log.info("Saving Exchange Rate "+ers.toString());			
+			log.debug("Saving Exchange Rate "+ers.toString());			
 			repository.save(ers);
 		}else {
 			throw new Exception("Tag success is false, check this call");
